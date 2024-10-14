@@ -3,6 +3,9 @@
 {% block title %}Liste des ordonnances{% endblock %}
 
 {% block body %}
+    <p>
+        Date du jour: {{ "now"|date("d/m/Y") }}
+    </p>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -14,13 +17,13 @@
         </thead>
         <tbody>
         {% for prescription in prescriptions %}
-            <tr>
+            <tr {% if prescription.isComplete %} class="green-row" {% endif %}>
                 <td>{{ prescription.id }}</td>
-                <td>{{ prescription.dateStart ? prescription.dateStart|date('Y-m-d') : '' }}</td>
-                <td>{{ prescription.dateEnd ? prescription.dateEnd|date('Y-m-d') : '' }}</td>
+                <td>{{ prescription.dateStart ? prescription.dateStart|date('d/m/Y') : '' }}</td>
+                <td>{{ prescription.dateEnd ? prescription.dateEnd|date('d/m/Y') : '' }}</td>
                 <td>
-                    <a class="btn btn-sm btn-info" href="{{ path('app_prescription_show', {'id': prescription.id}) }}">show</a>
-                    <a class="btn btn-sm btn-warning" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">edit</a>
+                    <a class="btn btn-sm btn-info" href="{{ path('app_prescription_show', {'id': prescription.id}) }}">voir</a>
+                    <a class="btn btn-sm btn-warning" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -32,6 +35,6 @@
     </table>
 
     <div>
-        <a class="btn btn-primary" href="{{ path('app_prescription_new') }}">Nouveau</a>
+        <a class="btn btn-sm btn-primary" href="{{ path('app_prescription_new') }}">Nouveau</a>
     </div>
 {% endblock %}

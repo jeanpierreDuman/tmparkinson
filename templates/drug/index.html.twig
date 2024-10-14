@@ -6,7 +6,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -15,8 +15,8 @@
             <tr>
                 <td>{{ drug }}</td>
                 <td>
-                    <a class="btn btn-sm btn-info" href="{{ path('app_drug_show', {'id': drug.id}) }}">show</a>
-                    <a class="btn btn-sm btn-warning" href="{{ path('app_drug_edit', {'id': drug.id}) }}">edit</a>
+                    <a class="btn btn-sm btn-info" href="{{ path('app_drug_show', {'id': drug.id}) }}">voir</a>
+                    <a class="btn btn-sm btn-warning" href="{{ path('app_drug_edit', {'id': drug.id}) }}">modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -28,6 +28,6 @@
     </table>
 
     <div>
-        <a href="{{ path('app_drug_new') }}" class="btn btn-primary">Nouveau</a>
+        <a href="{{ path('app_drug_new') }}" class="btn btn-sm btn-primary">Nouveau</a>
     </div>
 {% endblock %}

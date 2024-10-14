@@ -48,6 +48,16 @@ final class PrescriptionController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/confirm', name: 'app_prescription_confirm', methods: ['GET'])]
+    public function confirm(Prescription $prescription, EntityManagerInterface $entityManager): Response
+    {
+        $prescription->setComplete(true);
+        $entityManager->persist($prescription);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_prescription_index');
+    }
+
     #[Route('/{id}', name: 'app_prescription_show', methods: ['GET'])]
     public function show(Prescription $prescription): Response
     {

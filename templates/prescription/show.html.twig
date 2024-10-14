@@ -28,7 +28,13 @@
                 <td>{{ pLine.quantity }}</td>
                 <td>
                     {% for freq in pLine.frequency %}
-                        {{ freq }}
+                        {% if freq == "morning" %}
+                            matin
+                        {% elseif freq == "noon" %}
+                            midi
+                        {% else %}
+                            soir
+                        {% endif %}
                     {% endfor %}
                 </td>
             </tr>
@@ -40,7 +46,10 @@
     </table>
 
     <div>
-        <a class="btn btn-sm btn-primary float-start mt-4" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">Soumettre</a>
+        <a class="btn btn-sm btn-primary float-start mt-4" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">Editer</a>
+        {% if not prescription.isComplete %}
+            <a class="btn btn-sm btn-primary float-end mt-4" href="{{ path('app_prescription_confirm', {'id': prescription.id}) }}">Confirmer</a>
+        {% endif %}
     </div>
 
     <div class="mt-4">

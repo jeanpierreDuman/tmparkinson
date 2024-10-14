@@ -3,10 +3,10 @@
 {% block title %}Édition d'un médicament{% endblock %}
 
 {% block body %}
-    {{ include('drug/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('drug/_form.html.twig', {'button_label': 'Soumettre'}) }}
 
     <div class="mt-4">
-        <a href="{{ path('app_drug_index') }}" class="btn btn-sm btn-warning float-start">back to list</a>
+        <a href="{{ path('app_drug_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
         {{ include('drug/_delete_form.html.twig') }}
     </div>
 {% endblock %}

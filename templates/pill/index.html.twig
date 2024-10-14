@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pilulier{% endblock %}
+
+{% block body %}
+    <div class="col-md-4">
+        <p><b>Matin</b></p>
+        <div>
+            {% for pill in pillsMorning %}
+                <p>{{ pill.quantity }} x {{ pill.drug }}</p>
+            {% else %}
+                <p>aucun médicament</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <p><b>Midi</b></p>
+        <div>
+            {% for pill in pillsNoon %}
+                <p>{{ pill.quantity }} x {{ pill.drug }}</p>
+            {% else %}
+                <p>aucun médicament</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <p><b>Soir</b></p>
+        <div>
+            {% for pill in pillsNight %}
+                <p>{{ pill.quantity }} x {{ pill.drug }}</p>
+            {% else %}
+                <p>aucun médicament</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
