@@ -1,0 +1,50 @@
+{{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-md-2">
+            <div>Début</div>
+            {{ form_widget(form.dateStart) }}
+        </div>
+        <div class="col-md-2">
+            <div>Fin</div>
+            {{ form_widget(form.dateEnd) }}
+        </div>
+    </div>
+
+    <div class="font-weight-bold text-center" style="font-size: 30px">
+        <span class="add-item btn btn-primary">
+            Ajouter
+        </span>
+        <span class="remove-item btn btn-danger">
+            Retirer
+        </span>
+    </div>
+
+    <table class="table table-bordered mt-3">
+        <tr>
+            <td class="col-md-1"><b>Médicament</b></td>
+            <td class="col-md-1"><b>Quantité</b></td>
+            <td class="col-md-1"><b>Fréquence</b></td>
+            <td class="col-md-1">Action</td>
+        </tr>
+        <tbody id="list-item-collection"
+            data-prototype="{{ form_widget(form.prescriptionLines.vars.prototype)|e }}"
+            data-widget-tags="{{ '<li></li>'|e }}"
+            data-widget-counter="{{ form.prescriptionLines|length }}">
+            {% for pL in form.prescriptionLines %}
+                <tr class="mb-2">
+                    <td class="col-md-5">{{ form_widget(pL.drug) }}</td>
+                    <td class="col-md-5">{{ form_widget(pL.quantity) }}</td>
+                    <td class="col-md-5">{{ form_widget(pL.frequency) }}</td>
+                    <td class="col-md-2">
+                        <button class="btn btn-danger remove-cibling-item">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button class="btn btn-sm btn-primary">{{ button_label|default('Soumettre') }}</button>
+{{ form_end(form) }}

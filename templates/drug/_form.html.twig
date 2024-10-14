@@ -1,4 +1,25 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="row">
+    <div class="col-md-3">
+        {{ form_start(form) }}
+
+            <div>
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {attr: {'class': 'form-control'}}) }}
+            </div>
+
+            <div>
+                {{ form_label(form.milligram) }}
+                {{ form_widget(form.milligram, {attr: {'class': 'form-control'}}) }}
+            </div>
+
+            <div>
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type, {attr: {'class': 'form-control'}}) }}
+            </div>
+
+            <button class="btn btn-sm btn-primary mt-4">{{ button_label|default('Save') }}</button>
+
+            {{ form_rest(form) }}
+        {{ form_end(form) }}
+    </div>
+</div>

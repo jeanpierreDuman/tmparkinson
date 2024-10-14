@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Drug{% endblock %}
+{% block title %}Visualisation médicament{% endblock %}
 
 {% block body %}
-    <h1>Drug</h1>
-
     <table class="table">
         <tbody>
             <tr>
@@ -18,9 +16,12 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_drug_index') }}">back to list</a>
+    <div>
+        <a class="btn btn-sm btn-primary float-start mt-4" href="{{ path('app_drug_edit', {'id': drug.id}) }}">edit</a>
+    </div>
 
-    <a href="{{ path('app_drug_edit', {'id': drug.id}) }}">edit</a>
-
-    {{ include('drug/_delete_form.html.twig') }}
+    <div class="mt-4">
+        <a href="{{ path('app_drug_index') }}" class="btn btn-sm btn-warning float-start">back to list</a>
+        {{ include('drug/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

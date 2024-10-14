@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle ordonnance{% endblock %}
+
+{% block body %}
+    {% form_theme form.prescriptionLines 'form/prescription_prescriptionLines_entry_widget.html.twig' %}
+
+    {{ include('prescription/_form.html.twig') }}
+
+    <div class="mt-4">
+        <a href="{{ path('app_prescription_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/formCollection.js') }}"></script>
+{% endblock %}

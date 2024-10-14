@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Édition d'une ordonnance{% endblock %}
+
+{% block body %}
+    {% form_theme form.prescriptionLines 'form/prescription_prescriptionLines_entry_widget.html.twig' %}
+
+    {{ include('prescription/_form.html.twig', {'button_label': 'Soumettre'}) }}
+
+    <div class="mt-4">
+        <a href="{{ path('app_prescription_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
+        {{ include('prescription/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/formCollection.js') }}"></script>
+{% endblock %}

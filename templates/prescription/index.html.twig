@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des ordonnances{% endblock %}
+
+{% block body %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prescription in prescriptions %}
+            <tr>
+                <td>{{ prescription.id }}</td>
+                <td>{{ prescription.dateStart ? prescription.dateStart|date('Y-m-d') : '' }}</td>
+                <td>{{ prescription.dateEnd ? prescription.dateEnd|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a class="btn btn-sm btn-info" href="{{ path('app_prescription_show', {'id': prescription.id}) }}">show</a>
+                    <a class="btn btn-sm btn-warning" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr class="text-center">
+                <td colspan="4">Aucune ordonnance</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        <a class="btn btn-primary" href="{{ path('app_prescription_new') }}">Nouveau</a>
+    </div>
+{% endblock %}

@@ -1,14 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Drug index{% endblock %}
+{% block title %}Liste des médicaments{% endblock %}
 
 {% block body %}
-    <h1>Drug index</h1>
-
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>actions</th>
             </tr>
@@ -16,11 +13,10 @@
         <tbody>
         {% for drug in drugs %}
             <tr>
-                <td>{{ drug.id }}</td>
-                <td>{{ drug.name }}</td>
+                <td>{{ drug }}</td>
                 <td>
-                    <a href="{{ path('app_drug_show', {'id': drug.id}) }}">show</a>
-                    <a href="{{ path('app_drug_edit', {'id': drug.id}) }}">edit</a>
+                    <a class="btn btn-sm btn-info" href="{{ path('app_drug_show', {'id': drug.id}) }}">show</a>
+                    <a class="btn btn-sm btn-warning" href="{{ path('app_drug_edit', {'id': drug.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +27,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_drug_new') }}">Create new</a>
+    <div>
+        <a href="{{ path('app_drug_new') }}" class="btn btn-primary">Nouveau</a>
+    </div>
 {% endblock %}

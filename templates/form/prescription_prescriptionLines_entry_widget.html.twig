@@ -1,0 +1,12 @@
+{% block _prescription_prescriptionLines_entry_widget %}
+    <tr class="mb-2">
+        <td class="col-md-5">{{ form_widget(form.drug) }}</td>
+        <td class="col-md-5">{{ form_widget(form.quantity) }}</td>
+        <td class="col-md-5">{{ form_widget(form.frequency) }}</td>
+        <td class="col-md-2">
+            <button class="btn btn-danger remove-cibling-item">
+                Supprimer
+            </button>
+        </td>
+    </tr>
+{% endblock %}

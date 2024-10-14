@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visualisation d'une ordonnance{% endblock %}
+
+{% block body %}
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Début</th>
+                <td>{{ prescription.dateStart ? prescription.dateStart|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Fin</th>
+                <td>{{ prescription.dateEnd ? prescription.dateEnd|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <tr>
+            <td><b>Médicament</b></td>
+            <td><b>Quantité</b></td>
+            <td><b>Fréquence</b></td>
+        </tr>
+        {% for pLine in prescription.prescriptionLines %}
+            <tr>
+                <td>{{ pLine.drug }}</td>
+                <td>{{ pLine.quantity }}</td>
+                <td>
+                    {% for freq in pLine.frequency %}
+                        {{ freq }}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td class="text-center" colspan="3">Aucun médicament prescris</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div>
+        <a class="btn btn-sm btn-primary float-start mt-4" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">Soumettre</a>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ path('app_prescription_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
+        {{ include('prescription/_delete_form.html.twig') }}
+    </div>
+
+
+
+
+{% endblock %}
