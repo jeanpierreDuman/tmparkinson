@@ -12,4 +12,4 @@ Create app to focus activities of patient with parkinson sickness
   - Check activity of the day
 ```
 
-![alt text](https://github.com/jeanpierreDuman/truepaper/blob/main/accueil.png)
+![alt text](https://github.com/jeanpierreDuman/tmparkinson/blob/main/accueil.png)
