@@ -16,6 +16,25 @@ class ActivityRepository extends ServiceEntityRepository
         parent::__construct($registry, Activity::class);
     }
 
+    public function getActivityOfDay()
+    {
+        $today = new \DateTime('now');
+        $todayCopy = new \DateTime('now');
+
+        $dateBefore = $today->setTime(0,0,0);
+        $dateAfter = $todayCopy->setTime(23,59,59);
+
+        return $this->createQueryBuilder('a')
+            ->select('a.name', 'COUNT(a.id) as count')
+            ->groupBy('a.name')
+            ->where('a.date BETWEEN :dateBefore AND :dateAfter')
+            ->setParameter('dateBefore', $dateBefore)
+            ->setParameter('dateAfter', $dateAfter)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     //    /**
     //     * @return Activity[] Returns an array of Activity objects
     //     */

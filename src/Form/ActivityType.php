@@ -19,8 +19,8 @@ class ActivityType extends AbstractType
                     'Douleur' => 'pain',
                     'Blocage' => 'blocked',
                     'Manger' => 'eat',
-                    'Changement de place' => 'change_place',
-                    'Demande toilette' => 'toilet',
+                    'Déplacement' => 'move',
+                    'Toilette' => 'toilet',
                 ]
             ])
         ;
