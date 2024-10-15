@@ -1,36 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pilulier{% endblock %}
+{% block title %}Pilulier de la semaine{% endblock %}
 
 {% block body %}
-    <div class="col-md-4">
-        <p><b>Matin</b></p>
-        <div>
-            {% for pill in pillsMorning %}
-                <p>{{ pill.quantity }} x {{ pill.drug }}</p>
-            {% else %}
-                <p>aucun médicament</p>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="col-md-4">
-        <p><b>Midi</b></p>
-        <div>
-            {% for pill in pillsNoon %}
-                <p>{{ pill.quantity }} x {{ pill.drug }}</p>
-            {% else %}
-                <p>aucun médicament</p>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="col-md-4">
-        <p><b>Soir</b></p>
-        <div>
-            {% for pill in pillsNight %}
-                <p>{{ pill.quantity }} x {{ pill.drug }}</p>
-            {% else %}
-                <p>aucun médicament</p>
-            {% endfor %}
-        </div>
-    </div>
+
+    <table class="table table-bordered">
+        {% for weekDay, weekPill in pillWeeks %}
+            <tr>
+                <th class="bg-light-grey">
+                    {{ weekDay }}
+                </th>
+                <td>
+                    <div class="row">
+                        {% for pills in weekPill %}
+                            <div class="col-md-4">
+                                {% if loop.index == 1 %}
+                                    <b>Matin</b>
+                                {% elseif loop.index == 2 %}
+                                    <b>Midi</b>
+                                {% else %}
+                                    <b>Soir</b>
+                                {% endif %}
+
+                                {% for pill in pills %}
+                                    <p>{{ pill.quantity }} x {{ pill.drug }}</p>
+                                {% else %}
+                                    <p>Aucun médicament prescris</p>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
 {% endblock %}

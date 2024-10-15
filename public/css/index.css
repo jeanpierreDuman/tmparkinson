@@ -8,3 +8,7 @@
 .green-row {
     background-color: #c5f9c5;
 }
+
+.bg-light-grey {
+    background-color: lightgray !important;
+}
