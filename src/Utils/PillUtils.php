@@ -13,7 +13,7 @@ class PillUtils {
         $this->prescriptionLineRepository = $prescriptionLineRepository;
     }
 
-    public function getDayPills($today = new \DateTime('now')) 
+    public function getDayPills($today = new \DateTime('now', new \DateTimeZone('Europe/Paris'))) 
     {
         $aDataPill = $this->prescriptionLineRepository->getDataPills($today);
 

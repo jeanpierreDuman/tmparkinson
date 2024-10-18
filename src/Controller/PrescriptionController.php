@@ -38,6 +38,7 @@ final class PrescriptionController extends AbstractController
             $dateEnd->setTime(23,59,59);
             
             $prescription->setDateStart($dateStart);
+            $prescription->setDateEnd($dateEnd);
 
             foreach($prescription->getPrescriptionLines() as $prescriptionLine) {
                 $prescriptionLine->setPrescription($prescription);

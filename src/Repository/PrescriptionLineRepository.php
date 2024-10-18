@@ -17,14 +17,15 @@ class PrescriptionLineRepository extends ServiceEntityRepository
     }
 
     public function getDataPills($today) {
-        return $this->createQueryBuilder('pL')
+        return 
+            $this->createQueryBuilder('pL')
             ->select('d.name', 'd.milligram', 'd.type', 'pL.quantity', 'pL.frequency')
             ->leftJoin('pL.prescription', 'p')
             ->leftJoin('pL.drug', 'd')
             ->where('p.isComplete = :isComplete')
             ->andWhere(':today BETWEEN p.dateStart AND p.dateEnd')
             ->setParameter('isComplete', true)
-            ->setParameter('today', $today)
+            ->setParameter('today', $today->format('Y-m-d'))
             ->getQuery()
             ->getResult()
         ;
