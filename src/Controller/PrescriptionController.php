@@ -30,16 +30,6 @@ final class PrescriptionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $dateStart = $prescription->getDateStart();
-            $dateEnd = $prescription->getDateEnd();
-
-            $dateStart->setTime(0,0,0);
-            $dateEnd->setTime(23,59,59);
-            
-            $prescription->setDateStart($dateStart);
-            $prescription->setDateEnd($dateEnd);
-
             foreach($prescription->getPrescriptionLines() as $prescriptionLine) {
                 $prescriptionLine->setPrescription($prescription);
                 $entityManager->persist($prescriptionLine);
