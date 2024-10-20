@@ -30,6 +30,9 @@ class Drug
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'drugs')]
+    private ?Package $package = null;
+
     public function __construct()
     {
         $this->prescriptionLines = new ArrayCollection();
@@ -115,6 +118,18 @@ class Drug
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPackage(): ?Package
+    {
+        return $this->package;
+    }
+
+    public function setPackage(?Package $package): static
+    {
+        $this->package = $package;
 
         return $this;
     }

@@ -17,6 +17,11 @@
                 {{ form_widget(form.type, {attr: {'class': 'form-control'}}) }}
             </div>
 
+            <div>
+                {{ form_label(form.package) }}
+                {{ form_widget(form.package, {attr: {'class': 'form-control'}}) }}
+            </div>
+
             <button class="btn btn-sm btn-primary mt-4">{{ button_label|default('Soumettre') }}</button>
 
             {{ form_rest(form) }}

@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PrescriptionRepository::class)]
 class Prescription
 {
+    const PRESCRIPTION_PREPARATION = "preparation";
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,6 +32,9 @@ class Prescription
      */
     #[ORM\OneToMany(targetEntity: PrescriptionLine::class, mappedBy: 'prescription', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $prescriptionLines;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $status = null;
 
     public function __construct()
     {
@@ -103,6 +108,18 @@ class Prescription
                 $prescriptionLine->setPrescription(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

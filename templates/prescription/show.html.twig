@@ -21,6 +21,9 @@
             <td><b>Médicament</b></td>
             <td><b>Quantité</b></td>
             <td><b>Fréquence</b></td>
+            {% if prescription.status is not null %}
+                <td><b>Boite à préparé</b></td>
+            {% endif %}
         </tr>
         {% for pLine in prescription.prescriptionLines %}
             <tr>
@@ -37,6 +40,9 @@
                         {% endif %}
                     {% endfor %}
                 </td>
+                {% if prescription.status is not null %}
+                    <td>{{ pLine.boxToPrepare }}</td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>
@@ -46,9 +52,13 @@
     </table>
 
     <div>
-        <a class="btn btn-sm btn-primary float-start mt-4" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">Editer</a>
         {% if not prescription.isComplete %}
+            <a class="btn btn-sm btn-primary float-start mt-4" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">Editer</a>
             <a class="btn btn-sm btn-primary float-end mt-4" href="{{ path('app_prescription_confirm', {'id': prescription.id}) }}">Confirmer</a>
+        {% endif %}
+
+        {% if prescription.status == "preparation" %}
+            <a class="btn btn-sm btn-primary float-end mt-4" href="{{ path('app_prescription_confirm', {'id': prescription.id}) }}">Confirmer la préparation</a>
         {% endif %}
     </div>
 

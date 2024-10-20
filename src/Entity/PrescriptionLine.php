@@ -26,6 +26,14 @@ class PrescriptionLine
     #[ORM\Column(type: Types::ARRAY)]
     private array $frequency = [];
 
+    #[ORM\Column]
+    private ?int $boxToPrepare = null;
+
+    public function __construct()
+    {
+        $this->setBoxToPrepare(0);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +83,18 @@ class PrescriptionLine
     public function setFrequency(array $frequency): static
     {
         $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    public function getBoxToPrepare(): ?int
+    {
+        return $this->boxToPrepare;
+    }
+
+    public function setBoxToPrepare(int $boxToPrepare): static
+    {
+        $this->boxToPrepare = $boxToPrepare;
 
         return $this;
     }

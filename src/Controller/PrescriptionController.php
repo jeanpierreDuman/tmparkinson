@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Prescription;
+use App\Entity\PrescriptionPreparation;
+use App\Entity\PrescriptionPreparationLine;
 use App\Form\PrescriptionType;
 use App\Repository\PrescriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,9 +32,11 @@ final class PrescriptionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $aData = [];
+            
             foreach($prescription->getPrescriptionLines() as $prescriptionLine) {
                 $prescriptionLine->setPrescription($prescription);
-                $entityManager->persist($prescriptionLine);
+                $entityManager->persist($prescriptionLine);                
             }
 
             $entityManager->persist($prescription);
@@ -51,6 +55,16 @@ final class PrescriptionController extends AbstractController
     public function confirm(Prescription $prescription, EntityManagerInterface $entityManager): Response
     {
         $prescription->setComplete(true);
+        $prescription->setStatus(Prescription::PRESCRIPTION_PREPARATION);
+
+        foreach($prescription->getPrescriptionLines() as $prescriptionLine) {
+            $numberOfDayTreatment = $prescription->getDateEnd()->diff($prescription->getDateStart())->format("%a") + 1;
+            $numberOfDrugByDay = $prescriptionLine->getQuantity() * count($prescriptionLine->getFrequency());
+            $totalPackage = intval(ceil(($numberOfDayTreatment * $numberOfDrugByDay) / $prescriptionLine->getDrug()->getPackage()->getQuantityDrug()));
+
+            $prescriptionLine->setBoxToPrepare($totalPackage);
+        }
+       
         $entityManager->persist($prescription);
         $entityManager->flush();
 
