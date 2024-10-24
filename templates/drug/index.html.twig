@@ -8,7 +8,6 @@
             <tr>
                 <th>Nom</th>
                 <th>Boite</th>
-                <th>Pharmacie</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -17,7 +16,6 @@
             <tr>
                 <td>{{ drug }}</td>
                 <td>{{ drug.quantityPackage }}</td>
-                <td>{{ drug.pharmacy != null ? drug.pharmacy.name : '-' }}</td>
                 <td>
                     <a class="btn btn-sm btn-info" href="{{ path('app_drug_show', {'id': drug.id}) }}">voir</a>
                     <a class="btn btn-sm btn-warning" href="{{ path('app_drug_edit', {'id': drug.id}) }}">modifier</a>
