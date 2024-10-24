@@ -18,7 +18,7 @@ class PrescriptionType extends AbstractType
         $builder
             ->add('user', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'username'
+                'choice_label' => 'name'
             ])
             ->add('dateStart', null, [
                 'widget' => 'single_text',

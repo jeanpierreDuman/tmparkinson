@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Pharmacy $pharmacy = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
     public function __construct()
     {
         $this->prescriptions = new ArrayCollection();
@@ -162,6 +165,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPharmacy(?Pharmacy $pharmacy): static
     {
         $this->pharmacy = $pharmacy;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

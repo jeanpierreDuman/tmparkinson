@@ -21,7 +21,7 @@
         {% for prescription in prescriptions %}
             <tr {% if prescription.isComplete %} class="green-row" {% endif %}>
                 <td>{{ prescription.id }}</td>
-                <td>{{ prescription.user.username }}</td>
+                <td>{{ prescription.user.name }}</td>
                 <td>{{ prescription.dateStart ? prescription.dateStart|date('d/m/Y') : '' }}</td>
                 <td>{{ prescription.dateEnd ? prescription.dateEnd|date('d/m/Y') : '' }}</td>
                 <td>
