@@ -22,7 +22,7 @@ class DrugType extends AbstractType
                     'Gélule' => 'gel'
                 ],
             ])
-            ->add('package')
+            ->add('quantityPackage')
         ;
     }
 

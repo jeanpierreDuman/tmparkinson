@@ -30,7 +30,7 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('app_default_index');
         }
 
-        $pills = $pillUtils->getDayPills();
+        $pills = $pillUtils->getDayPills($this->getUser());
 
         $aActivity = [];
 

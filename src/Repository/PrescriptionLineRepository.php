@@ -16,14 +16,17 @@ class PrescriptionLineRepository extends ServiceEntityRepository
         parent::__construct($registry, PrescriptionLine::class);
     }
 
-    public function getDataPills($today) {
+    public function getDataPills($user, $today) {
         return 
             $this->createQueryBuilder('pL')
             ->select('d.name', 'd.milligram', 'd.type', 'pL.quantity', 'pL.frequency')
             ->leftJoin('pL.prescription', 'p')
             ->leftJoin('pL.drug', 'd')
+            ->leftJoin('p.user', 'u')
             ->where('p.isComplete = :isComplete')
             ->andWhere(':today BETWEEN p.dateStart AND p.dateEnd')
+            ->andWhere('u = :user')
+            ->setParameter('user', $user)
             ->setParameter('isComplete', true)
             ->setParameter('today', $today->format('Y-m-d'))
             ->getQuery()

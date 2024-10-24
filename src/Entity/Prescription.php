@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Prescription
 {
     const PRESCRIPTION_PREPARATION = "preparation";
+    const PRESCRIPTION_RECEIVE = "receive";
+    const PRESCRIPTION_COMPLETE = "complete";
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -35,6 +37,15 @@ class Prescription
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
+
+    #[ORM\ManyToOne(inversedBy: 'prescriptions')]
+    private ?User $user = null;
+
+    #[ORM\Column]
+    private ?bool $isWaitingPharmacyForDrug = false;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateReceipt = null;
 
     public function __construct()
     {
@@ -120,6 +131,42 @@ class Prescription
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function isWaitingPharmacyForDrug(): ?bool
+    {
+        return $this->isWaitingPharmacyForDrug;
+    }
+
+    public function setWaitingPharmacyForDrug(bool $isWaitingPharmacyForDrug): static
+    {
+        $this->isWaitingPharmacyForDrug = $isWaitingPharmacyForDrug;
+
+        return $this;
+    }
+
+    public function getDateReceipt(): ?\DateTimeInterface
+    {
+        return $this->dateReceipt;
+    }
+
+    public function setDateReceipt(?\DateTimeInterface $dateReceipt): static
+    {
+        $this->dateReceipt = $dateReceipt;
 
         return $this;
     }

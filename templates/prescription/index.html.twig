@@ -10,9 +10,10 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Patient</th>
                 <th>Début</th>
                 <th>Fin</th>
-                <th>Préparation</th>
+                <th>Statut</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -20,11 +21,16 @@
         {% for prescription in prescriptions %}
             <tr {% if prescription.isComplete %} class="green-row" {% endif %}>
                 <td>{{ prescription.id }}</td>
+                <td>{{ prescription.user.username }}</td>
                 <td>{{ prescription.dateStart ? prescription.dateStart|date('d/m/Y') : '' }}</td>
                 <td>{{ prescription.dateEnd ? prescription.dateEnd|date('d/m/Y') : '' }}</td>
                 <td>
-                    {% if prescription.status is not null %}
-                        En cours
+                    {% if prescription.status is null %}
+                        -
+                    {% elseif prescription.status == 'preparation' %}
+                        En préparation
+                    {% elseif prescription.status == 'receive' %}
+                        En réception
                     {% else %}
                         -
                     {% endif %}

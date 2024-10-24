@@ -30,12 +30,19 @@ class Drug
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'drugs')]
-    private ?Package $package = null;
+    #[ORM\Column]
+    private ?int $quantityPackage = null;
+
+    /**
+     * @var Collection<int, PharmacyDrug>
+     */
+    #[ORM\OneToMany(targetEntity: PharmacyDrug::class, mappedBy: 'drug')]
+    private Collection $pharmacyDrugs;
 
     public function __construct()
     {
         $this->prescriptionLines = new ArrayCollection();
+        $this->pharmacyDrugs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,14 +129,44 @@ class Drug
         return $this;
     }
 
-    public function getPackage(): ?Package
+    public function getQuantityPackage(): ?int
     {
-        return $this->package;
+        return $this->quantityPackage;
     }
 
-    public function setPackage(?Package $package): static
+    public function setQuantityPackage(int $quantityPackage): static
     {
-        $this->package = $package;
+        $this->quantityPackage = $quantityPackage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PharmacyDrug>
+     */
+    public function getPharmacyDrugs(): Collection
+    {
+        return $this->pharmacyDrugs;
+    }
+
+    public function addPharmacyDrug(PharmacyDrug $pharmacyDrug): static
+    {
+        if (!$this->pharmacyDrugs->contains($pharmacyDrug)) {
+            $this->pharmacyDrugs->add($pharmacyDrug);
+            $pharmacyDrug->setDrug($this);
+        }
+
+        return $this;
+    }
+
+    public function removePharmacyDrug(PharmacyDrug $pharmacyDrug): static
+    {
+        if ($this->pharmacyDrugs->removeElement($pharmacyDrug)) {
+            // set the owning side to null (unless already changed)
+            if ($pharmacyDrug->getDrug() === $this) {
+                $pharmacyDrug->setDrug(null);
+            }
+        }
 
         return $this;
     }

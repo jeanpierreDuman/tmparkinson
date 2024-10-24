@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Package;
+use App\Entity\PharmacyDrug;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Package>
+ * @extends ServiceEntityRepository<PharmacyDrug>
  */
-class PackageRepository extends ServiceEntityRepository
+class PharmacyDrugRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Package::class);
+        parent::__construct($registry, PharmacyDrug::class);
     }
 
     //    /**
-    //     * @return Package[] Returns an array of Package objects
+    //     * @return PharmacyDrug[] Returns an array of PharmacyDrug objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class PackageRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Package
+    //    public function findOneBySomeField($value): ?PharmacyDrug
     //    {
     //        return $this->createQueryBuilder('p')
     //            ->andWhere('p.exampleField = :val')

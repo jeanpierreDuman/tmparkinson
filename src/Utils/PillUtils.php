@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Entity\User;
 use App\Repository\PrescriptionLineRepository;
 
 class PillUtils {
@@ -13,9 +14,9 @@ class PillUtils {
         $this->prescriptionLineRepository = $prescriptionLineRepository;
     }
 
-    public function getDayPills($today = new \DateTime('now', new \DateTimeZone('Europe/Paris'))) 
+    public function getDayPills(User $user, $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'))) 
     {
-        $aDataPill = $this->prescriptionLineRepository->getDataPills($today);
+        $aDataPill = $this->prescriptionLineRepository->getDataPills($user, $today);
 
         $pills = [];
 

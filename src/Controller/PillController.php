@@ -18,7 +18,7 @@ class PillController extends AbstractController
         $aPillsWeek = [];
 
         for($i = 0; $i < 7; $i++) {
-            $aPillsWeek[$firstDayOfWeek->format('d/m/Y')] = $pillUtils->getDayPills($firstDayOfWeek);
+            $aPillsWeek[$firstDayOfWeek->format('d/m/Y')] = $pillUtils->getDayPills($this->getUser(), $firstDayOfWeek);
             $firstDayOfWeek->modify('+ 1 day');
         }
 
