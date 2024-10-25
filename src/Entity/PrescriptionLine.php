@@ -29,6 +29,9 @@ class PrescriptionLine
     #[ORM\Column]
     private ?int $boxToPrepare = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $unitPillWaste = null;
+
     public function __construct()
     {
         $this->setBoxToPrepare(0);
@@ -95,6 +98,18 @@ class PrescriptionLine
     public function setBoxToPrepare(int $boxToPrepare): static
     {
         $this->boxToPrepare = $boxToPrepare;
+
+        return $this;
+    }
+
+    public function getUnitPillWaste(): ?int
+    {
+        return $this->unitPillWaste;
+    }
+
+    public function setUnitPillWaste(?int $unitPillWaste): static
+    {
+        $this->unitPillWaste = $unitPillWaste;
 
         return $this;
     }

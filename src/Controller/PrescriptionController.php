@@ -62,9 +62,13 @@ final class PrescriptionController extends AbstractController
         foreach($prescription->getPrescriptionLines() as $prescriptionLine) {
             $numberOfDayTreatment = $prescription->getDateEnd()->diff($prescription->getDateStart())->format("%a") + 1;
             $numberOfDrugByDay = $prescriptionLine->getQuantity() * count($prescriptionLine->getFrequency());
+            // Compute total package
             $totalPackage = intval(ceil(($numberOfDayTreatment * $numberOfDrugByDay) / $prescriptionLine->getDrug()->getQuantityPackage()));
+            // Compute rest of pills
+            $totalWastePillWaste = intval(ceil(($numberOfDayTreatment * $numberOfDrugByDay) % $prescriptionLine->getDrug()->getQuantityPackage()));
 
             $prescriptionLine->setBoxToPrepare($totalPackage);
+            $prescriptionLine->setUnitPillWaste($totalWastePillWaste);
         }
        
         $entityManager->persist($prescription);

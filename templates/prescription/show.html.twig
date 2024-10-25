@@ -23,6 +23,7 @@
             <td><b>Fréquence</b></td>
             {% if prescription.status is not null %}
                 <td><b>Boite à préparé</b></td>
+                <td><b>Pillule gaché</b></td>
             {% endif %}
         </tr>
         {% for pLine in prescription.prescriptionLines %}
@@ -42,6 +43,7 @@
                 </td>
                 {% if prescription.status is not null %}
                     <td>{{ pLine.boxToPrepare }}</td>
+                    <td>{{ pLine.unitPillWaste }}</td>
                 {% endif %}
             </tr>
         {% else %}
