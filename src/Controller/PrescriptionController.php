@@ -35,8 +35,6 @@ final class PrescriptionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $aData = [];
-            
             foreach($prescription->getPrescriptionLines() as $prescriptionLine) {
                 $prescriptionLine->setPrescription($prescription);
                 $entityManager->persist($prescriptionLine);                

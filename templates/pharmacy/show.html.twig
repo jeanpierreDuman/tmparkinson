@@ -23,12 +23,14 @@
                     <td><b>Médicament</b></td>
                     <td><b>Quantité</b></td>
                     <td><b>A préparer</b></td>
+                    <td><b>Action</b></td>
                 </tr>
                 {% for stock in stocks %}
                     <tr>
                         <td>{{ stock.drug }}</td>
                         <td>{{ stock.quantity }}</td>
                         <td>{{ stock.quantityToPrepare }}</td>
+                        <td class="text-center"><a href="{{ path('app_pharmacy_drug_stock_edit', {'id': stock.id}) }}" class="btn btn-primary btn-sm">Commander</a></td>
                     </tr>
                 {% else %}
                     <tr>
@@ -36,9 +38,6 @@
                     </tr>
                 {% endfor %}
             </table>
-            <div class="text-center">
-                <a class="btn btn-primary btn-sm" href="#">Commander</a>
-            </div>
         </div>
         <div class="col-md-6">
             <div class="text-center">
