@@ -67,4 +67,32 @@ class PillUtils {
             return "Gélule";
         }
     }
+
+    public function restructPillWaste($aListPillWaste) {
+        $aRestructPill = [];
+
+        foreach($aListPillWaste as $aList) {
+            if(!(in_array($aList['id'], array_column($aRestructPill, 'id')))) {
+                $aRestructPill[] = [
+                    "pLid" => [$aList['pLid']],
+                    "id" => $aList['id'],
+                    "name" => $aList['name'],
+                    "milligram" => $aList['milligram'],
+                    "type" => $aList['type'],
+                    "quantity" => $aList['quantity'],
+                    "quantityPackage" => $aList['quantityPackage']
+                ];
+            } else {
+                $index = array_search($aList['id'], array_column($aRestructPill, 'id'));
+
+                $plArray = $aRestructPill[$index]["pLid"];
+                $plArray[] = $aList['pLid'];
+
+                $aRestructPill[$index]["pLid"] = $plArray;
+                $aRestructPill[$index]["quantity"] = $aRestructPill[$index]["quantity"] + $aList['quantity'];
+            }
+        }
+
+        return $aRestructPill;
+    }
 }

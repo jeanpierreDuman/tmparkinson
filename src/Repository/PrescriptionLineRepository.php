@@ -6,6 +6,7 @@ use App\Entity\Pharmacy;
 use App\Entity\Prescription;
 use App\Entity\PrescriptionLine;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -35,22 +36,23 @@ class PrescriptionLineRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
+    
     public function getListWastePills(Pharmacy $pharmacy) {
         return $this->createQueryBuilder('pL')
-            ->select('d.name', 'd.milligram', 'd.type', 'SUM(pL.unitPillWaste) as quantity')
-            ->leftJoin('pL.drug', 'd')
-            ->leftJoin('pL.prescription', 'p')
-            ->leftJoin('p.user', 'u')
-            ->leftJoin('u.pharmacy', 'pharmacy')
+            ->select('pL.id AS pLid', 'drug.id', 'drug.name', 'drug.milligram', 'drug.type', 'SUM(pL.unitPillWaste) as quantity', 'drug.quantityPackage')
+            ->leftJoin('pL.drug', 'drug')
+            ->leftJoin('pL.prescription', 'prescription')
+            ->leftJoin('prescription.user', 'user')
+            ->leftJoin('user.pharmacy', 'pharmacy')
             ->where('pharmacy = :pharmacy')
-            ->andWhere('p.isComplete = :pIsComplete')
-            ->andWhere('p.status = :pStatus')
+            ->andWhere('prescription.isComplete = :pIsComplete')
+            ->andWhere('prescription.status = :pStatus')
             ->andWhere('pL.unitPillWaste IS NOT NULL')
             ->setParameter('pharmacy', $pharmacy)
             ->setParameter('pIsComplete', true)
             ->setParameter('pStatus', Prescription::PRESCRIPTION_COMPLETE)
-            ->groupBy('d')
+            ->groupBy('pL')
+            ->having('quantity > 0')
             ->getQuery()
             ->getResult()
         ;

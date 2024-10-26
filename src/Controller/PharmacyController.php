@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Pharmacy;
+use App\Entity\PrescriptionLine;
 use App\Form\PharmacyType;
+use App\Repository\DrugRepository;
+use App\Repository\PharmacyDrugRepository;
 use App\Repository\PharmacyRepository;
 use App\Repository\PrescriptionLineRepository;
+use App\Utils\PillUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,14 +48,72 @@ final class PharmacyController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_pharmacy_show', methods: ['GET'])]
-    public function show(Pharmacy $pharmacy, PrescriptionLineRepository $prescriptionLineRepository): Response
+    public function show(Pharmacy $pharmacy, PrescriptionLineRepository $prescriptionLineRepository, 
+                            PillUtils $pillUtils, PharmacyDrugRepository $pharmacyDrugRepository): Response
     {
         $aListPillWaste = $prescriptionLineRepository->getListWastePills($pharmacy);
+        $aListPillWaste = $pillUtils->restructPillWaste($aListPillWaste);
+        $stocks = $pharmacyDrugRepository->getStocks($pharmacy);
 
         return $this->render('pharmacy/show.html.twig', [
             'pharmacy' => $pharmacy,
-            'aListPillWaste' => $aListPillWaste
+            'aListPillWaste' => $aListPillWaste,
+            'stocks' => $stocks
         ]);
+    }
+
+    #[Route('/{id}/convert/inbox', name: 'app_pharmacy_convert_inbox', methods: ['GET'])]
+    public function convertInbox(Pharmacy $pharmacy, PrescriptionLineRepository $prescriptionLineRepository, PillUtils $pillUtils, 
+        DrugRepository $drugRepository, PharmacyDrugRepository $pharmacyDrugRepository, EntityManagerInterface $entityManager)
+    {
+        $aListPillWaste = $prescriptionLineRepository->getListWastePills($pharmacy);
+        $aListPillWaste = $pillUtils->restructPillWaste($aListPillWaste);
+
+        foreach($aListPillWaste as $pillWaste) {
+            if($pillWaste['quantity'] >= $pillWaste['quantityPackage']) {
+                $drug = $drugRepository->findOneById($pillWaste['id']);
+                $pharmacyDrug = $pharmacyDrugRepository->findOneBy(['pharmacy' => $pharmacy, 'drug' => $drug]);
+
+                $totalPackage = intval($pillWaste['quantity'] / $pillWaste['quantityPackage']);
+                $totalRestPills = intval($pillWaste['quantity'] % $pillWaste['quantityPackage']);
+
+                // Update Stock Pharmacy Drug
+                if($totalPackage !== 0) {
+                    if($pharmacyDrug->getQuantityToPrepare() === 0) {
+                        $pharmacyDrug->setQuantity($pharmacyDrug->getQuantity() + $totalPackage);
+                    } else {
+                        if($totalPackage > $pharmacyDrug->getQuantityToPrepare()) {
+                            $pharmacyDrug->setQuantityToPrepare(0);
+                            $pharmacyDrug->setQuantity($totalPackage - $pharmacyDrug->getQuantityToPrepare());
+                        } else {
+                            $pharmacyDrug->setQuantityToPrepare($pharmacyDrug->getQuantityToPrepare() - $totalPackage);
+                        }
+                    }
+                }
+
+                // Update unit pill waste by prescription lines id
+                $totalDrugToRemove = $totalPackage * $pillWaste['quantityPackage'];
+                $prescriptionLines = $prescriptionLineRepository->findById($pillWaste['pLid']);
+
+                foreach($prescriptionLines as $prescriptionLine) {
+                    $totalDrugToRemove = $totalDrugToRemove - $prescriptionLine->getUnitPillWaste();
+                    if($totalDrugToRemove > 0) {
+                        $prescriptionLine->setUnitPillWaste(0);
+                    } else {
+                        $prescriptionLine->setUnitPillWaste($totalDrugToRemove * -1);
+                        break;
+                    }
+
+                    $entityManager->persist($prescriptionLine);
+                }
+
+                $entityManager->persist($pharmacyDrug);
+            }
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_pharmacy_show', ['id' => $pharmacy->getId()]);
     }
 
     #[Route('/{id}/edit', name: 'app_pharmacy_edit', methods: ['GET', 'POST'])]
