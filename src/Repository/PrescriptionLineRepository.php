@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Pharmacy;
+use App\Entity\Prescription;
 use App\Entity\PrescriptionLine;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,6 +31,26 @@ class PrescriptionLineRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->setParameter('isComplete', true)
             ->setParameter('today', $today->format('Y-m-d'))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getListWastePills(Pharmacy $pharmacy) {
+        return $this->createQueryBuilder('pL')
+            ->select('d.name', 'd.milligram', 'd.type', 'SUM(pL.unitPillWaste) as quantity')
+            ->leftJoin('pL.drug', 'd')
+            ->leftJoin('pL.prescription', 'p')
+            ->leftJoin('p.user', 'u')
+            ->leftJoin('u.pharmacy', 'pharmacy')
+            ->where('pharmacy = :pharmacy')
+            ->andWhere('p.isComplete = :pIsComplete')
+            ->andWhere('p.status = :pStatus')
+            ->andWhere('pL.unitPillWaste IS NOT NULL')
+            ->setParameter('pharmacy', $pharmacy)
+            ->setParameter('pIsComplete', true)
+            ->setParameter('pStatus', Prescription::PRESCRIPTION_COMPLETE)
+            ->groupBy('d')
             ->getQuery()
             ->getResult()
         ;

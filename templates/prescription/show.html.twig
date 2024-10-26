@@ -42,8 +42,8 @@
                     {% endfor %}
                 </td>
                 {% if prescription.status is not null %}
-                    <td>{{ pLine.boxToPrepare }}</td>
-                    <td>{{ pLine.unitPillWaste }}</td>
+                    <td>{{ pLine.boxToPrepare ?? 0 }}</td>
+                    <td>{{ pLine.unitPillWaste ?? 0 }}</td>
                 {% endif %}
             </tr>
         {% else %}

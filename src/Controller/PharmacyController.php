@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Pharmacy;
 use App\Form\PharmacyType;
 use App\Repository\PharmacyRepository;
+use App\Repository\PrescriptionLineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,10 +44,13 @@ final class PharmacyController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_pharmacy_show', methods: ['GET'])]
-    public function show(Pharmacy $pharmacy): Response
+    public function show(Pharmacy $pharmacy, PrescriptionLineRepository $prescriptionLineRepository): Response
     {
+        $aListPillWaste = $prescriptionLineRepository->getListWastePills($pharmacy);
+
         return $this->render('pharmacy/show.html.twig', [
             'pharmacy' => $pharmacy,
+            'aListPillWaste' => $aListPillWaste
         ]);
     }
 

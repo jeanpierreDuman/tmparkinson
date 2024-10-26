@@ -1,34 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pharmacy{% endblock %}
+{% block title %}Visualisation d'un pharmacie{% endblock %}
 
 {% block body %}
-    <h1>Pharmacy</h1>
-
-    <table class="table">
+    <table class="table table-bordered">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ pharmacy.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
+                <th>Nom</th>
                 <td>{{ pharmacy.name }}</td>
             </tr>
         </tbody>
     </table>
 
-    <div>
-        {% for pD in pharmacy.pharmacyDrugs %}
-            <p>
-                Médicament : {{ pD.drug }} <br />
-                Quantité : {{ pD.quantity }} <br />
-                A préparé : {{ pD.quantityToPrepare }}
-            </p>
-        {% endfor %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="text-center">
+                Stock
+            </div>
+
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <td><b>Médicament</b></td>
+                    <td><b>Quantité</b></td>
+                    <td><b>A préparer</b></td>
+                </tr>
+                {% for pD in pharmacy.pharmacyDrugs %}
+                    <tr>
+                        <td>{{ pD.drug }}</td>
+                        <td>{{ pD.quantity }}</td>
+                        <td>{{ pD.quantityToPrepare }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td class="text-center" colspan="3">Aucun médicament en stock</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="text-center">
+                Déchets
+            </div>
+
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <td><b>Médicament</b></td>
+                    <td><b>Quantité</b></td>
+                </tr>
+                {% for pW in aListPillWaste %}
+                    <tr>
+                        <td>
+                            {{ pW.name ~ ' ' ~ pW.milligram ~ ' G ' }}
+                            {% if pW.type == 'gel' %}                    
+                                Gélule
+                            {% else %}
+                                Comprimé
+                            {% endif %}
+                            </td>
+                        <td>{{ pW.quantity }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td class="text-center" colspan="2">Aucun médicament</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
-
+    {# aListPillWaste #}
 
     <a href="{{ path('app_pharmacy_index') }}">back to list</a>
 
