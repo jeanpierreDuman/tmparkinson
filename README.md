@@ -1,16 +1,18 @@
-## TMParkinson Application
+## Goals
 
-### Goals
+Following parkinson activities & Follow pillbox created by prescriptions
 
-Create app to focus activities of patient with parkinson sickness
+## Framework or language
 
-```
-  - Create prescriptions
-  - Confirm prescription
-  - Create drugs
-  - Create Activy
-  - Check activity of the day
-  - Show week pills
-```
+- Symfony
+- Bootstrap
+
+## Features
+
+- Create prescriptions with workflow
+- Create drugs & pharmacy
+- Can see pillbox
+- Define package needed by user & Define number of wasted pill
+- Manage pharmacy stock (add drug & transform wasted pill by package in stock)
 
 ![alt text](https://github.com/jeanpierreDuman/tmparkinson/blob/main/accueil.png)
