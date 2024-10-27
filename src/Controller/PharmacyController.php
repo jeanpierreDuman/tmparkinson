@@ -51,8 +51,7 @@ final class PharmacyController extends AbstractController
 
     #[Route('/{id}', name: 'app_pharmacy_show', methods: ['GET'])]
     public function show(Pharmacy $pharmacy, PrescriptionLineRepository $prescriptionLineRepository, 
-                            PillUtils $pillUtils, PharmacyDrugRepository $pharmacyDrugRepository,
-                            Request $request): Response
+                            PillUtils $pillUtils, PharmacyDrugRepository $pharmacyDrugRepository): Response
     {
         $aListPillWaste = $prescriptionLineRepository->getListWastePills($pharmacy);
         $aListPillWaste = $pillUtils->restructPillWaste($aListPillWaste);
@@ -67,7 +66,9 @@ final class PharmacyController extends AbstractController
             $firstDayOfWeek->modify('+ 1 day');
         }
 
-        $form = $this->createForm(UserTypeChoiceTypeEntity::class);
+        $form = $this->createForm(UserTypeChoiceTypeEntity::class, null, [
+            'pharmacy' => $pharmacy
+        ]);
 
         return $this->render('pharmacy/show.html.twig', [
             'pharmacy' => $pharmacy,
