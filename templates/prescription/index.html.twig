@@ -20,7 +20,6 @@
                 </thead>
                 <tbody>
                 {% for prescription in prescriptions %}
-                    <a href="#">
                     <tr {% if prescription.isComplete %} class="green-row" {% endif %}>
                         <td>{{ prescription.id }}</td>
                         <td>{{ prescription.user.name }}</td>
@@ -38,7 +37,6 @@
                             {% endif %}
                         </td>
                     </tr>
-                    </a>
                 {% else %}
                     <tr class="text-center">
                         <td colspan="4">Aucune ordonnance</td>

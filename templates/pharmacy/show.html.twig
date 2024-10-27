@@ -52,7 +52,6 @@
             </div>
         </div>
         <div class="col-md-6">
-
             <div class="card">
                 <div class="card-header">
                     <b>Déchets</b>
@@ -90,16 +89,72 @@
                 </div>
             </div>
         </div>
+
+        <div>
+            <a class="btn btn-sm btn-primary" href="{{ path('app_pharmacy_edit', {'id': pharmacy.id}) }}">Editer</a>
+        </div>
+
+        <div class="mt-4">
+            {{ include('pharmacy/_delete_form.html.twig') }}
+            <a href="{{ path('app_pharmacy_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
+        </div>
     </div>
 
-    <div>
-        <a class="btn btn-sm btn-primary" href="{{ path('app_pharmacy_edit', {'id': pharmacy.id}) }}">Editer</a>
+    <div class="row mt-3 mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Pillulier
+                </div>
+                <div class="card-body">
+                    <div>
+                        {{ form_widget(form.user) }}
+                    </div>
+
+                    <table class="table table-bordered mt-3" id="table-user-pills"></table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="mt-4">
-        {{ include('pharmacy/_delete_form.html.twig') }}
-        <a href="{{ path('app_pharmacy_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
-    </div>
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            let userChoiceId = $("#user_type_choice_type_entity_user").val();
 
+            $("#user_type_choice_type_entity_user").on('change', function() {
+                addLoader();
+                changePills($(this).val());
+            });
+
+            function changePills(userId) {
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ path('app_user_pill') }}",
+                    data: {
+                        user_id : userId
+                    },
+                    success: function(content) {
+                        $("#table-user-pills").empty();
+                        $("#table-user-pills").append(content);
+                    },
+                    error: function() {
+                        $("#table-user-pills").empty();
+                        $("#table-user-pills").append("<p>Une erreur est survenue lors du chargement...</p>");
+                    }
+                });
+            }
+
+            function addLoader() {
+                $("#table-user-pills").empty();
+                $("#table-user-pills").append("<div class='spinner-border' />");
+            }
+
+            addLoader();
+            changePills(userChoiceId);
+        });
+    </script>
 {% endblock %}

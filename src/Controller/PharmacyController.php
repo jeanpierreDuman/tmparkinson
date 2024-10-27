@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Pharmacy;
 use App\Entity\PharmacyDrug;
-use App\Entity\PrescriptionLine;
+use App\Entity\User;
 use App\Form\PharmacyType;
+use App\Form\UserTypeChoiceTypeEntity;
 use App\Repository\DrugRepository;
 use App\Repository\PharmacyDrugRepository;
 use App\Repository\PharmacyRepository;
@@ -50,16 +51,30 @@ final class PharmacyController extends AbstractController
 
     #[Route('/{id}', name: 'app_pharmacy_show', methods: ['GET'])]
     public function show(Pharmacy $pharmacy, PrescriptionLineRepository $prescriptionLineRepository, 
-                            PillUtils $pillUtils, PharmacyDrugRepository $pharmacyDrugRepository): Response
+                            PillUtils $pillUtils, PharmacyDrugRepository $pharmacyDrugRepository,
+                            Request $request): Response
     {
         $aListPillWaste = $prescriptionLineRepository->getListWastePills($pharmacy);
         $aListPillWaste = $pillUtils->restructPillWaste($aListPillWaste);
         $stocks = $pharmacyDrugRepository->getStocks($pharmacy);
+        
+        $firstDayOfWeek = new \DateTime(date('Y-m-d', strtotime("this week")));
+
+        $aPillsWeek = [];
+
+        for($i = 0; $i < 7; $i++) {
+            $aPillsWeek[$firstDayOfWeek->format('d/m/Y')] = $pillUtils->getDayPills($this->getUser(), $firstDayOfWeek);
+            $firstDayOfWeek->modify('+ 1 day');
+        }
+
+        $form = $this->createForm(UserTypeChoiceTypeEntity::class);
 
         return $this->render('pharmacy/show.html.twig', [
             'pharmacy' => $pharmacy,
             'aListPillWaste' => $aListPillWaste,
-            'stocks' => $stocks
+            'stocks' => $stocks,
+            'pillWeeks' => $aPillsWeek,
+            'form' => $form
         ]);
     }
 

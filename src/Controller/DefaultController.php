@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'app_default_index')]
-    public function index(Request $request, EntityManagerInterface $entityManager, PillUtils $pillUtils, ActivityRepository $activityRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, ActivityRepository $activityRepository): Response
     {
         $activity = new Activity();
         $form = $this->createForm(ActivityType::class, $activity);
@@ -30,8 +30,6 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('app_default_index');
         }
 
-        $pills = $pillUtils->getDayPills($this->getUser());
-
         $aActivity = [];
 
         foreach($activityRepository->getActivityOfDay() as $aa) {
@@ -40,9 +38,6 @@ class DefaultController extends AbstractController
 
         return $this->render('default/index.html.twig', [
             'form' => $form,
-            'pillsMorning' => $pills['morning'],
-            'pillsNoon' => $pills['noon'],
-            'pillsNight' => $pills['night'],
             'activity' => $aActivity
         ]);
     }
