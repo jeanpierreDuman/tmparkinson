@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Pharmacy;
+use App\Entity\PharmacyDrug;
 use App\Entity\PrescriptionLine;
 use App\Form\PharmacyType;
 use App\Repository\DrugRepository;
@@ -75,7 +76,14 @@ final class PharmacyController extends AbstractController
                 $pharmacyDrug = $pharmacyDrugRepository->findOneBy(['pharmacy' => $pharmacy, 'drug' => $drug]);
 
                 $totalPackage = intval($pillWaste['quantity'] / $pillWaste['quantityPackage']);
-                $totalRestPills = intval($pillWaste['quantity'] % $pillWaste['quantityPackage']);
+                
+                if(!($pharmacyDrug instanceof PharmacyDrug)) {
+                    $pharmacyDrug = new PharmacyDrug();
+                    $pharmacyDrug->setDrug($drug);
+                    $pharmacyDrug->setPharmacy($pharmacy);
+                    $pharmacyDrug->setQuantity(0);
+                    $pharmacyDrug->setQuantityToPrepare(0);
+                }
 
                 // Update Stock Pharmacy Drug
                 if($totalPackage !== 0) {

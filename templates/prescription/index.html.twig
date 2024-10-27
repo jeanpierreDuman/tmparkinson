@@ -3,52 +3,53 @@
 {% block title %}Liste des ordonnances{% endblock %}
 
 {% block body %}
-    <p>
-        Date du jour: {{ "now"|date("d/m/Y") }}
-    </p>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Patient</th>
-                <th>Début</th>
-                <th>Fin</th>
-                <th>Statut</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for prescription in prescriptions %}
-            <tr {% if prescription.isComplete %} class="green-row" {% endif %}>
-                <td>{{ prescription.id }}</td>
-                <td>{{ prescription.user.name }}</td>
-                <td>{{ prescription.dateStart ? prescription.dateStart|date('d/m/Y') : '' }}</td>
-                <td>{{ prescription.dateEnd ? prescription.dateEnd|date('d/m/Y') : '' }}</td>
-                <td>
-                    {% if prescription.status is null %}
-                        -
-                    {% elseif prescription.status == 'preparation' %}
-                        En préparation
-                    {% elseif prescription.status == 'receive' %}
-                        En réception
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    <a class="btn btn-sm btn-info" href="{{ path('app_prescription_show', {'id': prescription.id}) }}">voir</a>
-                    <a class="btn btn-sm btn-warning" href="{{ path('app_prescription_edit', {'id': prescription.id}) }}">modifier</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr class="text-center">
-                <td colspan="4">Aucune ordonnance</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="card">
+        <div class="card-header">
+            <b>Date du jour: {{ "now"|date("d/m/Y") }}</b>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Patient</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for prescription in prescriptions %}
+                    <a href="#">
+                    <tr {% if prescription.isComplete %} class="green-row" {% endif %}>
+                        <td>{{ prescription.id }}</td>
+                        <td>{{ prescription.user.name }}</td>
+                        <td>{{ prescription.dateStart ? prescription.dateStart|date('d/m/Y') : '' }}</td>
+                        <td>{{ prescription.dateEnd ? prescription.dateEnd|date('d/m/Y') : '' }}</td>
+                        <td>
+                            {% if prescription.status is null %}
+                                -
+                            {% elseif prescription.status == 'preparation' %}
+                                En préparation
+                            {% elseif prescription.status == 'receive' %}
+                                En réception
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </a>
+                {% else %}
+                    <tr class="text-center">
+                        <td colspan="4">Aucune ordonnance</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <div>
+    <div class="mt-3">
         <a class="btn btn-sm btn-primary" href="{{ path('app_prescription_new') }}">Nouveau</a>
     </div>
 {% endblock %}

@@ -3,84 +3,103 @@
 {% block title %}Visualisation d'un pharmacie{% endblock %}
 
 {% block body %}
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th>Nom</th>
-                <td>{{ pharmacy.name }}</td>
-            </tr>
-        </tbody>
-    </table>
-
     <div class="row">
-        <div class="col-md-6">
-            <div class="text-center">
-                Stock
-            </div>
-
-            <table class="table table-bordered mt-3">
-                <tr>
-                    <td><b>Médicament</b></td>
-                    <td><b>Quantité</b></td>
-                    <td><b>A préparer</b></td>
-                    <td><b>Action</b></td>
-                </tr>
-                {% for stock in stocks %}
-                    <tr>
-                        <td>{{ stock.drug }}</td>
-                        <td>{{ stock.quantity }}</td>
-                        <td>{{ stock.quantityToPrepare }}</td>
-                        <td class="text-center"><a href="{{ path('app_pharmacy_drug_stock_edit', {'id': stock.id}) }}" class="btn btn-primary btn-sm">Commander</a></td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td class="text-center" colspan="3">Aucun médicament en stock</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div class="col-md-6">
-            <div class="text-center">
-                Déchets
-            </div>
-
-            <table class="table table-bordered mt-3">
-                <tr>
-                    <td><b>Médicament</b></td>
-                    <td><b>Boite</b></td>
-                    <td><b>Quantité</b></td>
-                </tr>
-                {% for pW in aListPillWaste %}
-                    <tr>
-                        <td>
-                            {{ pW.name ~ ' ' ~ pW.milligram ~ ' G ' }}
-                            {% if pW.type == 'gel' %}                    
-                                Gélule
-                            {% else %}
-                                Comprimé
-                            {% endif %}
-                            </td>
-                        <td>{{ pW.quantityPackage }}</td>
-                        <td>{{ pW.quantity }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td class="text-center" colspan="2">Aucun médicament</td>
-                    </tr>
-                {% endfor %}
-            </table>
-
-            <div class="text-center">
-                <a class="btn btn-primary btn-sm" href="{{ path('app_pharmacy_convert_inbox', {'id': pharmacy.id}) }}">Convertir en boite</a>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <b>Pharmacie</b>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ pharmacy.name }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    {# aListPillWaste #}
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <b>Stock</b>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered mt-3">
+                        <tr>
+                            <td><b>Médicament</b></td>
+                            <td><b>Quantité</b></td>
+                            <td><b>A préparer</b></td>
+                            <td><b>Action</b></td>
+                        </tr>
+                        {% for stock in stocks %}
+                            <tr>
+                                <td>{{ stock.drug }}</td>
+                                <td>{{ stock.quantity }}</td>
+                                <td>{{ stock.quantityToPrepare }}</td>
+                                <td class="text-center"><a href="{{ path('app_pharmacy_drug_stock_edit', {'id': stock.id}) }}" class="btn btn-primary btn-sm">Commander</a></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="text-center" colspan="4">Aucun médicament en stock</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
 
-    <a href="{{ path('app_pharmacy_index') }}">back to list</a>
+            <div class="card">
+                <div class="card-header">
+                    <b>Déchets</b>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered mt-3">
+                        <tr>
+                            <td><b>Médicament</b></td>
+                            <td><b>Boite</b></td>
+                            <td><b>Quantité</b></td>
+                        </tr>
+                        {% for pW in aListPillWaste %}
+                            <tr>
+                                <td>
+                                    {{ pW.name ~ ' ' ~ pW.milligram ~ ' G ' }}
+                                    {% if pW.type == 'gel' %}                    
+                                        Gélule
+                                    {% else %}
+                                        Comprimé
+                                    {% endif %}
+                                    </td>
+                                <td>{{ pW.quantityPackage }}</td>
+                                <td>{{ pW.quantity }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td class="text-center" colspan="2">Aucun médicament</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
 
-    <a href="{{ path('app_pharmacy_edit', {'id': pharmacy.id}) }}">edit</a>
+                    <div class="text-center">
+                        <a class="btn btn-primary btn-sm" href="{{ path('app_pharmacy_convert_inbox', {'id': pharmacy.id}) }}">Convertir en boite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    {{ include('pharmacy/_delete_form.html.twig') }}
+    <div>
+        <a class="btn btn-sm btn-primary" href="{{ path('app_pharmacy_edit', {'id': pharmacy.id}) }}">Editer</a>
+    </div>
+
+    <div class="mt-4">
+        {{ include('pharmacy/_delete_form.html.twig') }}
+        <a href="{{ path('app_pharmacy_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
+    </div>
+
+
 {% endblock %}
