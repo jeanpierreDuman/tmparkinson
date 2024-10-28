@@ -104,11 +104,14 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    Pillulier
+                    <b>Pillulier</b>
                 </div>
                 <div class="card-body">
-                    <div>
+                    <div style="display: inline-block">
                         {{ form_widget(form.user) }}
+                    </div>
+                    <div class="float-end">
+                        <input data-pharmacy={{ pharmacy.id }} type="text" id="input-user-name" />
                     </div>
 
                     <table class="table table-bordered mt-3" id="table-user-pills"></table>
@@ -124,6 +127,31 @@
     <script>
         $(document).ready(function() {
             let userChoiceId = $("#user_type_choice_type_entity_user").val();
+
+            $("#input-user-name").on('keypress', function(e) {
+                if(e.which == 13) {
+                    let value = $(this).val();
+                    let pharmacyId = $(this).data('pharmacy');
+                    if(value.length !== 0) {
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ path('app_user_add') }}",
+                            data: {
+                                name: value,
+                                pharmacyId: pharmacyId
+                            },
+                            beforeSend: function() {
+                                $("#input-user-name").val("");
+                                addLoader();
+                            },
+                            success: function(data) {
+                                $("#user_type_choice_type_entity_user").append(new Option(data.name, data.id, true, true));
+                                changePills(data.id);
+                            }
+                        });
+                    }
+                }
+            });
 
             $("#user_type_choice_type_entity_user").on('change', function() {
                 addLoader();

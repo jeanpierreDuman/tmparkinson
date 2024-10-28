@@ -140,6 +140,30 @@ final class PharmacyController extends AbstractController
         return $this->redirectToRoute('app_pharmacy_show', ['id' => $pharmacy->getId()]);
     }
 
+    #[Route('/user/add', name: 'app_user_add', methods: ['GET', 'POST'])]
+    public function userAdd(Request $request, EntityManagerInterface $entityManager, PharmacyRepository $pharmacyRepository)
+    {
+        $name = $request->get('name') ?? null;
+        $pharmacyId = $request->get('pharmacyId') ?? null;
+
+        if($name !== null && $pharmacyId !== null) {
+            $pharmacy = $pharmacyRepository->findOneById($pharmacyId);
+            $user = new User();
+            $user->setName($name);
+            $user->setPharmacy($pharmacy);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->json([
+                'id' => $user->getId(),
+                'name' => $user->getName()
+            ]);
+        }
+
+        return $this->json([]);
+    }
+
     #[Route('/{id}/edit', name: 'app_pharmacy_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Pharmacy $pharmacy, EntityManagerInterface $entityManager): Response
     {
