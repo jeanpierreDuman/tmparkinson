@@ -56,15 +56,6 @@ final class PharmacyController extends AbstractController
         $aListPillWaste = $prescriptionLineRepository->getListWastePills($pharmacy);
         $aListPillWaste = $pillUtils->restructPillWaste($aListPillWaste);
         $stocks = $pharmacyDrugRepository->getStocks($pharmacy);
-        
-        $firstDayOfWeek = new \DateTime(date('Y-m-d', strtotime("this week")));
-
-        $aPillsWeek = [];
-
-        for($i = 0; $i < 7; $i++) {
-            $aPillsWeek[$firstDayOfWeek->format('d/m/Y')] = $pillUtils->getDayPills($this->getUser(), $firstDayOfWeek);
-            $firstDayOfWeek->modify('+ 1 day');
-        }
 
         $form = $this->createForm(UserTypeChoiceTypeEntity::class, null, [
             'pharmacy' => $pharmacy
@@ -74,7 +65,6 @@ final class PharmacyController extends AbstractController
             'pharmacy' => $pharmacy,
             'aListPillWaste' => $aListPillWaste,
             'stocks' => $stocks,
-            'pillWeeks' => $aPillsWeek,
             'form' => $form
         ]);
     }

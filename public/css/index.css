@@ -12,3 +12,47 @@
 .bg-light-grey {
     background-color: lightgray !important;
 }
+
+.w-90 {
+    width: 95%;
+}
+
+.box-pain {
+    background: red;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.box-blocked {
+    background: black;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.box-eat {
+    background: blue;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.box-move {
+    background: orange;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.box-toilet {
+    background: green;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 10px;
+}

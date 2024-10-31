@@ -16,20 +16,30 @@ class ActivityRepository extends ServiceEntityRepository
         parent::__construct($registry, Activity::class);
     }
 
+    public function getAllByMonthAndYear($year, $month) {
+        return $this->createQueryBuilder('a')
+            ->select("COUNT(a.id) as count", "a.name as name", "DATE_FORMAT(a.date, '%d/%m/%Y') as date")
+            ->where("DATE_FORMAT(a.date, '%m') = :month")
+            ->andWhere("DATE_FORMAT(a.date, '%Y') = :year")
+            ->setParameter("month", $month)
+            ->setParameter("year", $year)
+            ->groupBy('a.name', 'date')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function getActivityOfDay()
     {
-        $today = new \DateTime('now');
-        $todayCopy = new \DateTime('now');
-
-        $dateBefore = $today->setTime(0,0,0);
-        $dateAfter = $todayCopy->setTime(23,59,59);
+        $today = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $todayCopy = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
 
         return $this->createQueryBuilder('a')
             ->select('a.name', 'COUNT(a.id) as count')
             ->groupBy('a.name')
             ->where('a.date BETWEEN :dateBefore AND :dateAfter')
-            ->setParameter('dateBefore', $dateBefore)
-            ->setParameter('dateAfter', $dateAfter)
+            ->setParameter('dateBefore', $today->format('Y-m-d'))
+            ->setParameter('dateAfter', $todayCopy->format('Y-m-d'))
             ->getQuery()
             ->getResult()
         ;

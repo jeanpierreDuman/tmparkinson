@@ -14,5 +14,6 @@ Following parkinson activities & Follow pillbox created by prescriptions
 - Can see pillbox
 - Define package needed by user & Define number of wasted pill
 - Manage pharmacy stock (add drug & transform wasted pill by package in stock)
+- Create activity and check by day / month
 
 ![alt text](https://github.com/jeanpierreDuman/tmparkinson/blob/main/accueil.png)

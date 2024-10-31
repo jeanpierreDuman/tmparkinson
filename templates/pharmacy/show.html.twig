@@ -110,8 +110,11 @@
                     <div style="display: inline-block">
                         {{ form_widget(form.user) }}
                     </div>
+                    <div style="display: inline-block">
+                        <span>Supprimer</span>
+                    </div>
                     <div class="float-end">
-                        <input data-pharmacy={{ pharmacy.id }} type="text" id="input-user-name" />
+                        <input data-pharmacy={{ pharmacy.id }} type="text" id="input-user-name" placeholder="nom d'utilisateur" />
                     </div>
 
                     <table class="table table-bordered mt-3" id="table-user-pills"></table>

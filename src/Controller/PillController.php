@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\PrescriptionLineRepository;
 use App\Repository\UserRepository;
 use App\Utils\PillUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
