@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Visualisation d'un pharmacie{% endblock %}
+{% block title %}Visualisation d'une pharmacie{% endblock %}
 
 {% block body %}
     <div class="row">
@@ -107,17 +107,14 @@
                     <b>Pillulier</b>
                 </div>
                 <div class="card-body">
-                    <div style="display: inline-block">
-                        {{ form_widget(form.user) }}
-                    </div>
-                    <div style="display: inline-block">
-                        <span>Supprimer</span>
+                    <div class="float-start">
+                        {{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
                     </div>
                     <div class="float-end">
-                        <input data-pharmacy={{ pharmacy.id }} type="text" id="input-user-name" placeholder="nom d'utilisateur" />
+                        <input class="form-control" data-pharmacy={{ pharmacy.id }} type="text" id="input-user-name" placeholder="nom d'utilisateur" />
                     </div>
 
-                    <table class="table table-bordered mt-3" id="table-user-pills"></table>
+                    <table class="table table-bordered mt-5" id="table-user-pills"></table>
                 </div>
             </div>
         </div>

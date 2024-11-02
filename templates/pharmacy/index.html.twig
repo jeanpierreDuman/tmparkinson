@@ -1,26 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pharmacy index{% endblock %}
+{% block title %}Liste des pharmacies{% endblock %}
 
 {% block body %}
-    <h1>Pharmacy index</h1>
-
-    <table class="table">
+    <table class="table table-bordered" >
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for pharmacy in pharmacies %}
             <tr>
-                <td>{{ pharmacy.id }}</td>
                 <td>{{ pharmacy.name }}</td>
                 <td>
-                    <a href="{{ path('app_pharmacy_show', {'id': pharmacy.id}) }}">show</a>
-                    <a href="{{ path('app_pharmacy_edit', {'id': pharmacy.id}) }}">edit</a>
+                    <a class="btn btn-sm btn-info" href="{{ path('app_pharmacy_show', {'id': pharmacy.id}) }}">voir</a>
+                    <a class="btn btn-sm btn-warning" href="{{ path('app_pharmacy_edit', {'id': pharmacy.id}) }}">modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +27,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_pharmacy_new') }}">Create new</a>
+    <a class="btn btn-sm btn-primary" href="{{ path('app_pharmacy_new') }}">Nouveau</a>
 {% endblock %}

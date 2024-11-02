@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Pharmacy{% endblock %}
+{% block title %}Édition d'une pharmacie{% endblock %}
 
 {% block body %}
-    <h1>Edit Pharmacy</h1>
+    {{ include('pharmacy/_form.html.twig', {'button_label': 'Soumettre'}) }}
 
-    {{ include('pharmacy/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_pharmacy_index') }}">back to list</a>
-
-    {{ include('pharmacy/_delete_form.html.twig') }}
+    <div class="mt-4">
+        <a href="{{ path('app_pharmacy_index') }}" class="btn btn-sm btn-warning float-start">Retour</a>
+        {{ include('pharmacy/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
